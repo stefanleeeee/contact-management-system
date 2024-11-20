@@ -3,7 +3,14 @@
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
+
+:-webkit-scrollbar {
+    display: none;
+}
+  
 
 body {
     background-color: rgb(43, 49, 43);
@@ -11,7 +18,7 @@ body {
 
 #header {
     font-size:x-large;
-    position: absolute;
+    position: sticky;
     top: 0;
     left: 0;
     width: calc(100% - 1em);
@@ -22,9 +29,10 @@ body {
 }
 
 #contacts-holder {
-    margin-top: 3em;
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr;
+    /* margin-top: 3em; */
     padding: 1em;
-    
     transition: all 1s;
 }
 
@@ -43,5 +51,29 @@ body {
 }
 
 .contact {
-    width: 20%;
+    padding: 0.75em;
+    border-radius: 3.5em 1em 1em 3.5em;
+    overflow: hidden;
+    text-overflow: clip;
+    width: calc(100% - 2.5em);
+    margin-bottom: 1em;
+    background-color: #8686865b;
+    box-shadow: 2px 2px 10px #111;
+    height: 5em;
 }
+
+.contact::after {
+    overflow: hidden;
+    text-overflow: clip;
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.contact-avatar {
+    float: left;
+    height: 5em;
+    margin-right: 0.75em;
+    aspect-ratio: 1/1;
+}
+
