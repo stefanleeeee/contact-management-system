@@ -4,9 +4,14 @@ USE Vova;
 
 CREATE TABLE IF NOT EXISTS Contacts (
    id INT PRIMARY KEY AUTO_INCREMENT,
-   telephone_number VARCHAR(20),
+   telephone_number VARCHAR(50),
    firstname VARCHAR(50),
    lastname VARCHAR(50),
-   description VARCHAR(255),
-   contactphoto BLOB
+   description VARCHAR(255)
 );
+
+DROP TABLE contacts;
+
+SELECT * FROM contacts;
+
+INSERT INTO contacts (telephone_number, firstname, lastname, DESCRIPTION) VALUES ('svbncxdfs', 'afsdfdssdf', 'sghjkjhyjksdf', 'qweqsdf');
