@@ -1,6 +1,7 @@
 var contactHolder = document.getElementById("contacts-holder")
 
 function resetAddButton(){
+    $("#confirm-add").off("click");
     $("#confirm-add").on("click", addContact)
 }
 
@@ -13,13 +14,13 @@ $("#add-button").on("click", () => {
 
 function addContact(){
     const regexp = /^[\+]?[0-9]?[0-9]?[0-9]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4}$/
-    if(regexp.test(document.getElementById("inp_phone").value)){
+    if(regexp.test($("#inp_phone").val())){
         $.post(".", {
             operation: "CREATE",
-            data: [document.getElementById("inp_phone").value,
-             document.getElementById("inp_firstname").value,
-             document.getElementById("inp_lastname").value,
-             document.getElementById("inp_description").value]
+            phone: $("#inp_phone").val(),
+            firstname: $("#inp_firstname").val(),
+            lastname: $("#inp_lastname").val(),
+            description: $("#inp_description").val()
         }, loadContacts)
         document.getElementById("add-contact").className = "hidden";
     } else {
@@ -31,13 +32,11 @@ function genEditContact(id) {
     return function () {
         $.post(".", {
             operation: "UPDATE",
-            data: [
-                id,
-                document.getElementById("inp_phone").value,
-                document.getElementById("inp_firstname").value,
-                document.getElementById("inp_lastname").value,
-                document.getElementById("inp_description").value
-            ]
+            id: id,
+            phone: $("#inp_phone").val(),
+            firstname: $("#inp_firstname").val(),
+            lastname: $("#inp_lastname").val(),
+            description: $("#inp_description").val()
         }, () => {
             loadContacts()
             resetAddButton();
@@ -63,12 +62,10 @@ function loadContacts () {
     $.post(".", {
         operation: "READ"
     }, (data) => {
+        console.log(JSON.parse(data))
         if(data.length == 0) return
         contactHolder.innerHTML = "";
-        var contacts = []
-        data.split(";").slice(0, -1).forEach(el => contacts.push(el.split(",").slice(0,-1)))
-        console.log(contacts);
-        contacts.forEach(el => {
+        JSON.parse(data).forEach(el => {
             console.log(el[0])
             contactHolder.innerHTML += completeTemplate(el[0], el[1], el[2], el[3], el[4])
         })
@@ -82,6 +79,7 @@ function loadContacts () {
                 }, loadContacts)
             })
             $(`#edt-${el.id}`).on("click", () => {
+                $("#confirm-add").off("click");
                 $("#confirm-add").on("click", genEditContact(el.id))
                 document.getElementById("confirm-add").innerHTML = "Внести зміни"
                 document.getElementById("add-contact").className = "";

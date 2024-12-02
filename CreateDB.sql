@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS Contacts (
 
 DROP TABLE contacts;
 
+DELETE FROM contacts;
+
 SELECT * FROM contacts;
 
 INSERT INTO contacts (telephone_number, firstname, lastname, DESCRIPTION) VALUES ('svbncxdfs', 'afsdfdssdf', 'sghjkjhyjksdf', 'qweqsdf');
