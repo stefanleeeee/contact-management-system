@@ -291,7 +291,7 @@ input:is(:-webkit-autofill, :autofill){
     width: calc(100% - 1em);
 }
 
-#confirm-edit, #cancel-edit {
+#confirm-edit, #cancel-edit, #delete-image {
     background-color: rgb(5, 158, 0);
     box-shadow: inset 0px 0px 5px #649162, 0px 0px 1px #5e5e5e;
     width: 100%;
@@ -307,4 +307,13 @@ input:is(:-webkit-autofill, :autofill){
     height: 20vw;
     clip-path: circle(50%);
     aspect-ratio: 1 / 1;
+}
+
+#search-field {
+    z-index: 1;
+    position: fixed;
+    top: 0.5rem;
+    width: 15vh;
+    right: 50%;
+    transform: translateX(50%);
 }

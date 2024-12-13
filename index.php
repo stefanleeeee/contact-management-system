@@ -149,7 +149,7 @@
                     $avatar = null;
                 }
         
-                $sql = "UPDATE Contacts SET telephone_number = ?, firstname = ?, lastname = ?, description = ?, avatar = COALESCE(?, avatar) WHERE id = ? AND user_id = ?";
+                $sql = "UPDATE Contacts SET telephone_number = ?, firstname = ?, lastname = ?, description = ?, avatar = ? WHERE id = ? AND user_id = ?";
                 $stmt = $db->prepare($sql);
                 $stmt->bind_param("sssssii", $telephone_number, $firstname, $lastname, $description, $avatar, $contact_id, $user_id);
         

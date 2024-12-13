@@ -63,6 +63,7 @@ function addContact() {
                 console.log(data)
                 if(data["success"]){
                     $("#add-contact").hide()
+                    selectedFile = null
                     loadContacts()
                 } else {
                     alert(data["message"])
@@ -89,23 +90,44 @@ function completeTemplate(id, avatar, number, firstname, lastname, description) 
 }
 
 contacts_array = []
+var value = ""
+sort = "az"
+
+let timer;
+
+$('#search-field').on('input', function() {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+        value = $(this).val();
+        redrawContacts()
+    }, 500);
+});
+
 
 // Загрузка контактов с сервера
 function loadContacts() {
     $.post(".", { isRead: true }, (response) => {
         const contacts = JSON.parse(response).contacts;
-        contactHolder.innerHTML = ""; // Очищаем контейнер контактов
         contacts_array = contacts;
-        contacts.forEach(contact => {
-            contactHolder.innerHTML += completeTemplate(contact.id, contact.avatar, contact.telephone_number, contact.firstname, contact.lastname, contact.description);
-            
-        });
-        addHandlers()
+        
+        redrawContacts()
     });
 }
 
-function addHandlers() {
-    contacts_array.forEach(contact => {
+function redrawContacts() {
+    contactHolder.innerHTML = ""
+    var sortedData = [...contacts_array];
+    if(value !== ""){
+        sortedData = sortedData.filter(record => {
+            // var qwer = [record.telephone_number, record.firstname, record.lastname].join(" ")
+            return [record.telephone_number, record.firstname, record.lastname].join(" ").includes(value)
+        })
+    }
+    sortedData.forEach(contact => {
+        contactHolder.innerHTML += completeTemplate(contact.id, contact.avatar, contact.telephone_number, contact.firstname, contact.lastname, contact.description);
+    });
+    sortedData.forEach(contact => {
         $(`#del-${contact.id}`).on("click", () => {deleteContact(contact.id)});
         $(`#edt-${contact.id}`).on("click", () => {editContact(contact)});
     });
@@ -120,10 +142,12 @@ function deleteContact(id) {
 function editContact(contact) {
     const editForm = document.createElement("div");
     editForm.className = "edit-form";
+    console.log(contact)
     editForm.innerHTML = `
         <div class="edit-place">
-            <label for="edit_pic" ><img id="edit_preview" src="defaultcontact.svg"></label>
+            <label for="edit_pic" ><img id="edit_preview" alt="defaultcontact.svg" src="uploads/${contact.avatar ? contact.avatar : '../defaultcontact.svg'}"></label>
             <input id="edit_pic" name="pic" type="file" accept="image/*" style="display: none;">
+            <button id="delete-image" class="unselectable">Видалити фото</button>
             <input placeholder="Номер" type="text" id="edit_phone" value="${contact.telephone_number}">
             <input placeholder="Ім'я" type="text" id="edit_firstname" value="${contact.firstname}">
             <input placeholder="Фамілія" type="text" id="edit_lastname" value="${contact.lastname}">
@@ -144,6 +168,12 @@ function editContact(contact) {
             image.src = URL.createObjectURL(selectedFile);
         }
     });
+
+    $("#delete-image").on('click', () => {
+        selectedFile = null
+        const image = document.getElementById('edit_preview')
+        image.src = "defaultcontact.svg"
+    }) 
 
     // Обработчик подтверждения редактирования
     $('#confirm-edit').on('click', () => {
