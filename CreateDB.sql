@@ -2,18 +2,24 @@ CREATE DATABASE IF NOT EXISTS Vova;
 
 USE Vova;
 
-CREATE TABLE IF NOT EXISTS Contacts (
+CREATE TABLE IF NOT EXISTS Users (
    id INT PRIMARY KEY AUTO_INCREMENT,
-   telephone_number VARCHAR(50),
-   firstname VARCHAR(50),
-   lastname VARCHAR(50),
-   description VARCHAR(255)
+   username VARCHAR(50),
+   pass VARCHAR(255)
 );
 
-DROP TABLE contacts;
+CREATE TABLE IF NOT EXISTS Contacts (
+   id INT PRIMARY KEY AUTO_INCREMENT,
+   user_id INT NOT NULL,
+   telephone_number VARCHAR(50) NOT NULL,
+   firstname VARCHAR(50) NOT NULL,
+   lastname VARCHAR(50),
+   avatar VARCHAR(255),
+	description VARCHAR(255),
+   FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
+);
 
-DELETE FROM contacts;
+DROP DATABASE Vova;
 
+SELECT * FROM Users;
 SELECT * FROM contacts;
-
-INSERT INTO contacts (telephone_number, firstname, lastname, DESCRIPTION) VALUES ('svbncxdfs', 'afsdfdssdf', 'sghjkjhyjksdf', 'qweqsdf');
