@@ -10,6 +10,10 @@ resetAddButton();
 
 // Обработчик для кнопки "Добавить контакт"
 $("#add-button").on("click", () => {
+    $("#inp_phone").val("")
+    $("#inp_firstname").val("")
+    $("#inp_lastname").val("")
+    $("#inp_description").val("")
     $("#add-contact").show()
     $("#preview-add").attr("src", "defaultcontact.svg"); // Устанавливаем изображение по умолчанию
     selectedFile = null;
@@ -17,10 +21,6 @@ $("#add-button").on("click", () => {
 
 $("#cancel-add").on("click", () => {
     $("#add-contact").hide()
-    $("#inp_phone").val("")
-    $("#inp_firstname").val("")
-    $("#inp_lastname").val("")
-    $("#inp_description").val("")
 })
 
 // Обработчик для выбора аватарки
