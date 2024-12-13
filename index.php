@@ -86,7 +86,7 @@
                 $uploadDir = 'uploads/';
                 if (isset($_FILES['avatar'])) {
                     $fileTmpPath = $_FILES['avatar']['tmp_name'];
-                    $fileName = uniqid() . basename($_FILES['avatar']['name']);
+                    $fileName = uniqid() . basename(str_replace(" ", "", $_FILES['avatar']['name']));
                     $uploadFilePath = $uploadDir . $fileName;
         
                     if (move_uploaded_file($fileTmpPath, $uploadFilePath)) {
@@ -136,7 +136,7 @@
                 $uploadDir = 'uploads/';
                 if (isset($_FILES['avatar'])) {
                     $fileTmpPath = $_FILES['avatar']['tmp_name'];
-                    $fileName = uniqid() . basename($_FILES['avatar']['name']);
+                    $fileName = uniqid() . basename(str_replace(" ", "", $_FILES['avatar']['name']));
                     $uploadFilePath = $uploadDir . $fileName;
         
                     if (move_uploaded_file($fileTmpPath, $uploadFilePath)) {

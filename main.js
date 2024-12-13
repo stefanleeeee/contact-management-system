@@ -88,20 +88,26 @@ function completeTemplate(id, avatar, number, firstname, lastname, description) 
             </div>`;
 }
 
+contacts_array = []
+
 // Загрузка контактов с сервера
 function loadContacts() {
     $.post(".", { isRead: true }, (response) => {
         const contacts = JSON.parse(response).contacts;
         contactHolder.innerHTML = ""; // Очищаем контейнер контактов
+        contacts_array = contacts;
         contacts.forEach(contact => {
             contactHolder.innerHTML += completeTemplate(contact.id, contact.avatar, contact.telephone_number, contact.firstname, contact.lastname, contact.description);
-
-            // Обработчик для удаления
-            $(`#del-${contact.id}`).on("click", () => deleteContact(contact.id));
-
-            // Обработчик для редактирования
-            $(`#edt-${contact.id}`).on("click", () => editContact(contact));
+            
         });
+        addHandlers()
+    });
+}
+
+function addHandlers() {
+    contacts_array.forEach(contact => {
+        $(`#del-${contact.id}`).on("click", () => {deleteContact(contact.id)});
+        $(`#edt-${contact.id}`).on("click", () => {editContact(contact)});
     });
 }
 
@@ -115,14 +121,17 @@ function editContact(contact) {
     const editForm = document.createElement("div");
     editForm.className = "edit-form";
     editForm.innerHTML = `
-        <input type="text" id="edit_phone" value="${contact.telephone_number}">
-        <input type="text" id="edit_firstname" value="${contact.firstname}">
-        <input type="text" id="edit_lastname" value="${contact.lastname}">
-        <textarea id="edit_description">${contact.description}</textarea>
-        <input type="file" id="edit_pic">
-        <img id="edit_preview" src="cntimgs/${contact.avatar}" alt="defaultcontact.svg">
-        <button id="confirm-edit">Confirm</button>
-        <button id="cancel-edit">Cancel</button>
+        <div class="edit-place">
+            <label for="edit_pic" ><img id="edit_preview" src="defaultcontact.svg"></label>
+            <input id="edit_pic" name="pic" type="file" accept="image/*" style="display: none;">
+            <input placeholder="Номер" type="text" id="edit_phone" value="${contact.telephone_number}">
+            <input placeholder="Ім'я" type="text" id="edit_firstname" value="${contact.firstname}">
+            <input placeholder="Фамілія" type="text" id="edit_lastname" value="${contact.lastname}">
+            <input placeholder="Опис" id="edit_description" value="${contact.description}">
+            
+            <button id="confirm-edit">Confirm</button><br>
+            <button id="cancel-edit">Cancel</button>
+        <div>
     `;
 
     document.body.appendChild(editForm);
