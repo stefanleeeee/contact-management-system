@@ -121,13 +121,14 @@ body {
 }
 
 #form {
+    width: 20vw;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 10px;
     background-color: #8686865b;
-    border-radius: 1.5em;
+    border-radius: calc(10vw + 0.5em) calc(10vw + 0.5em) 1.5em 1.5em;
     box-shadow: 2px 2px 15px #000000;
 }
 
@@ -231,4 +232,37 @@ input:is(:-webkit-autofill, :autofill){
     top: 0.5em;
     right: 0.5em;
     width: fit-content;
+}
+
+#preview-add {
+    width: 20vw;
+    height: 20vw;
+    clip-path: circle(50%);
+    aspect-ratio: 1 / 1;
+}
+
+.add-contact-input {
+    width: calc(100% - 1em);
+}
+
+#cancel-add {
+    margin-top: 0.5em;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 1em;
+    border: none;
+    padding: 0.5em;
+    width: calc(100% - 1em);
+    outline: none;
+    background-color: rgb(158, 0, 0);
+    box-shadow: inset 0px 0px 5px #916262, 0px 0px 1px #5e5e5e;
+    transition: all 0.5s;
+}
+
+#cancel-add:hover {
+    background-color: #be0000;
+}
+
+#cancel-add:active {
+    background-color: #e02f2f;
 }
